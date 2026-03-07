@@ -344,6 +344,7 @@ header h2 {
     box-shadow: 0 4px 0 #ddd;
     cursor: pointer;
     transition: transform 0.1s, box-shadow 0.1s;
+    touch-action: none;
 }
 
 .numpad button:active {
