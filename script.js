@@ -9,12 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Player State
     const players = {
-        1: { score: 0, answerStr: '' },
-        2: { score: 0, answerStr: '' }
+        1: { score: 0, answerStr: '', currentAnswer: 0, isActive: false },
+        2: { score: 0, answerStr: '', currentAnswer: 0, isActive: false }
     };
-
-    let currentAnswer = 0;
-    let isProblemActive = true;
 
     // Elements
     const getEl = (id) => document.getElementById(id);
@@ -33,51 +30,44 @@ document.addEventListener('DOMContentLoaded', () => {
         answerEls[player].textContent = players[player].answerStr;
     }
 
-    function generateProblem() {
-        isProblemActive = true;
-        players[1].answerStr = '';
-        players[2].answerStr = '';
-        updateAnswerDisplay(1);
-        updateAnswerDisplay(2);
+    function generateProblem(p) {
+        players[p].isActive = true;
+        players[p].answerStr = '';
+        updateAnswerDisplay(p);
 
-        feedbackEls[1].className = 'feedback';
-        feedbackEls[1].textContent = '';
-        feedbackEls[2].className = 'feedback';
-        feedbackEls[2].textContent = '';
+        feedbackEls[p].className = 'feedback';
+        feedbackEls[p].textContent = '';
 
         const isAddition = Math.random() > 0.5;
-        let num1, num2;
+        let num1, num2, answer;
 
         if (isAddition) {
-            currentAnswer = getRandomInt(2, 20);
-            num1 = getRandomInt(1, currentAnswer - 1);
-            num2 = currentAnswer - num1;
-            opEls[1].textContent = '+';
-            opEls[2].textContent = '+';
+            answer = getRandomInt(2, 20);
+            num1 = getRandomInt(1, answer - 1);
+            num2 = answer - num1;
+            opEls[p].textContent = '+';
         } else {
             num1 = getRandomInt(1, 20);
             num2 = getRandomInt(1, num1);
-            currentAnswer = num1 - num2;
-            opEls[1].textContent = '-';
-            opEls[2].textContent = '-';
+            answer = num1 - num2;
+            opEls[p].textContent = '-';
         }
+        
+        players[p].currentAnswer = answer;
 
-        // Update both boards
-        [1, 2].forEach(p => {
-            num1Els[p].textContent = num1;
-            num2Els[p].textContent = num2;
-            num1Els[p].classList.add('pop-animation');
-            num2Els[p].classList.add('pop-animation');
-            
-            setTimeout(() => {
-                num1Els[p].classList.remove('pop-animation');
-                num2Els[p].classList.remove('pop-animation');
-            }, 400);
-        });
+        num1Els[p].textContent = num1;
+        num2Els[p].textContent = num2;
+        num1Els[p].classList.add('pop-animation');
+        num2Els[p].classList.add('pop-animation');
+        
+        setTimeout(() => {
+            num1Els[p].classList.remove('pop-animation');
+            num2Els[p].classList.remove('pop-animation');
+        }, 400);
     }
 
     function checkAnswer(player) {
-        if (!isProblemActive) return;
+        if (!players[player].isActive) return;
 
         const val = parseInt(players[player].answerStr, 10);
         
@@ -87,25 +77,21 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (val === currentAnswer) {
+        if (val === players[player].currentAnswer) {
             // Correct format: this player wins the round
-            isProblemActive = false; // Disable further inputs for this round
+            players[player].isActive = false; // Disable further inputs for this round
             players[player].score += 10;
             scoreEls[player].textContent = players[player].score;
             scoreEls[player].parentElement.classList.add('pop-animation');
             setTimeout(() => scoreEls[player].parentElement.classList.remove('pop-animation'), 400);
 
-            feedbackEls[player].textContent = 'Νικητής!';
+            feedbackEls[player].textContent = 'Σωστά! 🎉';
             feedbackEls[player].className = 'feedback show win';
-            
-            const otherPlayer = player === 1 ? 2 : 1;
-            feedbackEls[otherPlayer].textContent = 'Έχασες αυτήν την φάση!';
-            feedbackEls[otherPlayer].className = 'feedback show wrong';
 
             createConfetti(player);
 
-            // Wait 2 secs, then next problem
-            setTimeout(generateProblem, 2500);
+            // Wait a bit, then next problem just for them
+            setTimeout(() => generateProblem(player), 2000);
 
         } else {
             // Wrong answer
@@ -119,8 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Numpad logic
     document.querySelectorAll('.num-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            if (!isProblemActive) return;
             const p = e.target.getAttribute('data-player');
+            if (!players[p].isActive) return;
             const val = e.target.textContent;
             if (players[p].answerStr.length < 3) {
                 players[p].answerStr += val;
@@ -131,8 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.cmd-btn.clear').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            if (!isProblemActive) return;
             const p = e.target.getAttribute('data-player');
+            if (!players[p].isActive) return;
             players[p].answerStr = '';
             updateAnswerDisplay(p);
         });
@@ -140,8 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.cmd-btn.check').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            if (!isProblemActive) return;
-            const p = parseInt(e.target.getAttribute('data-player'));
+            const p = parseInt(e.target.getAttribute('data-player'), 10);
+            if (!players[p].isActive) return;
             checkAnswer(p);
         });
     });
@@ -207,14 +193,16 @@ document.addEventListener('DOMContentLoaded', () => {
         btnBack.classList.remove('hidden');
 
         // Start first problem
-        generateProblem();
+        generateProblem(1);
+        generateProblem(2);
     }
 
     btnTablet.addEventListener('click', () => startGame('tablet'));
     btnBoard.addEventListener('click', () => startGame('board'));
 
     btnBack.addEventListener('click', () => {
-        isProblemActive = false; // Stop timers/inputs
+        players[1].isActive = false;
+        players[2].isActive = false;
         gameContainer.classList.add('hidden');
         btnBack.classList.add('hidden');
         selectionScreen.classList.remove('hidden');
