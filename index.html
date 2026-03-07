@@ -1,39 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="el">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Fun!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Λύσε τις πράξεις στο Πι και Φι!</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <header>
-            <h1>Math Adventure! 🚀</h1>
-            <div class="score-board">
-                <span>Score: <span id="score">0</span></span>
-            </div>
-        </header>
-
-        <main class="game-area">
-            <div class="equation-container">
-                <span id="num1" class="number">?</span>
-                <span id="operator" class="operator">+</span>
-                <span id="num2" class="number">?</span>
-                <span class="equals">=</span>
-                <input type="number" id="answer" placeholder="?" autocomplete="off" autofocus>
-            </div>
+    <div class="split-screen">
+        
+        <!-- Player 1 (Top, rotated) -->
+        <div class="player-board player-1">
+            <header>
+                <h2>Παίκτης 1</h2>
+                <div class="score-board">Σκορ: <span id="score-p1">0</span></div>
+            </header>
             
-            <button id="check-btn" class="action-btn">Check Answer!</button>
-            <button id="next-btn" class="action-btn hidden">Next Question ➡️</button>
-
-            <div id="feedback" class="feedback"></div>
-        </main>
-
-        <div class="characters">
-            <div class="mascot">🦉</div>
+            <main class="game-area">
+                <div class="equation-container">
+                    <span id="num1-p1" class="number">?</span>
+                    <span id="operator-p1" class="operator">+</span>
+                    <span id="num2-p1" class="number">?</span>
+                    <span class="equals">=</span>
+                    <div class="answer-box" id="answer-p1"></div>
+                </div>
+                
+                <div class="numpad">
+                    <button class="num-btn" data-player="1">1</button>
+                    <button class="num-btn" data-player="1">2</button>
+                    <button class="num-btn" data-player="1">3</button>
+                    <button class="num-btn" data-player="1">4</button>
+                    <button class="num-btn" data-player="1">5</button>
+                    <button class="num-btn" data-player="1">6</button>
+                    <button class="num-btn" data-player="1">7</button>
+                    <button class="num-btn" data-player="1">8</button>
+                    <button class="num-btn" data-player="1">9</button>
+                    <button class="cmd-btn clear" data-player="1">C</button>
+                    <button class="num-btn" data-player="1">0</button>
+                    <button class="cmd-btn check" data-player="1">✔</button>
+                </div>
+                <div id="feedback-p1" class="feedback"></div>
+            </main>
+            
+            <div class="characters">
+                <div class="mascot pencil">
+                    <div class="pencil-eraser"></div>
+                    <div class="pencil-metal"></div>
+                    <div class="pencil-body">
+                        <div class="eyes">
+                            <div class="eye"><div class="pupil"></div></div>
+                            <div class="eye"><div class="pupil"></div></div>
+                        </div>
+                        <div class="smile"></div>
+                    </div>
+                    <div class="pencil-wood"><div class="pencil-tip"></div></div>
+                </div>
+            </div>
         </div>
+
+        <!-- Center Divider -->
+        <div class="divider">
+            <h1>Λύσε τις πράξεις στο Πι και Φι! 🚀</h1>
+        </div>
+
+        <!-- Player 2 (Bottom) -->
+        <div class="player-board player-2">
+            <header>
+                <h2>Παίκτης 2</h2>
+                <div class="score-board">Σκορ: <span id="score-p2">0</span></div>
+            </header>
+            
+            <main class="game-area">
+                <div class="equation-container">
+                    <span id="num1-p2" class="number">?</span>
+                    <span id="operator-p2" class="operator">+</span>
+                    <span id="num2-p2" class="number">?</span>
+                    <span class="equals">=</span>
+                    <div class="answer-box" id="answer-p2"></div>
+                </div>
+                
+                <div class="numpad">
+                    <button class="num-btn" data-player="2">1</button>
+                    <button class="num-btn" data-player="2">2</button>
+                    <button class="num-btn" data-player="2">3</button>
+                    <button class="num-btn" data-player="2">4</button>
+                    <button class="num-btn" data-player="2">5</button>
+                    <button class="num-btn" data-player="2">6</button>
+                    <button class="num-btn" data-player="2">7</button>
+                    <button class="num-btn" data-player="2">8</button>
+                    <button class="num-btn" data-player="2">9</button>
+                    <button class="cmd-btn clear" data-player="2">C</button>
+                    <button class="num-btn" data-player="2">0</button>
+                    <button class="cmd-btn check" data-player="2">✔</button>
+                </div>
+                <div id="feedback-p2" class="feedback"></div>
+            </main>
+
+            <div class="characters">
+                <div class="mascot pencil">
+                    <div class="pencil-eraser"></div>
+                    <div class="pencil-metal"></div>
+                    <div class="pencil-body">
+                        <div class="eyes">
+                            <div class="eye"><div class="pupil"></div></div>
+                            <div class="eye"><div class="pupil"></div></div>
+                        </div>
+                        <div class="smile"></div>
+                    </div>
+                    <div class="pencil-wood"><div class="pencil-tip"></div></div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <script src="script.js"></script>
 </body>
