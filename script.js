@@ -104,7 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Numpad logic
     document.querySelectorAll('.num-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        const handler = (e) => {
+            e.preventDefault(); // allow multi-touch to work instantly
             const p = e.target.getAttribute('data-player');
             if (!players[p].isActive) return;
             const val = e.target.textContent;
@@ -112,24 +113,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 players[p].answerStr += val;
                 updateAnswerDisplay(p);
             }
-        });
+        };
+        btn.addEventListener('touchstart', handler, {passive: false});
+        btn.addEventListener('mousedown', handler);
     });
 
     document.querySelectorAll('.cmd-btn.clear').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        const handler = (e) => {
+            e.preventDefault();
             const p = e.target.getAttribute('data-player');
             if (!players[p].isActive) return;
             players[p].answerStr = '';
             updateAnswerDisplay(p);
-        });
+        };
+        btn.addEventListener('touchstart', handler, {passive: false});
+        btn.addEventListener('mousedown', handler);
     });
 
     document.querySelectorAll('.cmd-btn.check').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        const handler = (e) => {
+            e.preventDefault();
             const p = parseInt(e.target.getAttribute('data-player'), 10);
             if (!players[p].isActive) return;
             checkAnswer(p);
-        });
+        };
+        btn.addEventListener('touchstart', handler, {passive: false});
+        btn.addEventListener('mousedown', handler);
     });
 
     // Create simple confetti effect originating from winner's side
