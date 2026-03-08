@@ -282,6 +282,22 @@ header h2 {
     border: 3px dashed var(--accent-purple);
 }
 
+.timer-display {
+    font-size: 1.5rem;
+    background-color: white;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-weight: bold;
+    border: 3px dashed var(--accent-red);
+    color: var(--accent-red);
+    margin-top: 5px;
+    font-family: 'Comic Neue', sans-serif;
+}
+.timer-pulse {
+    animation: pop 0.5s infinite alternate;
+}
+
 .game-area {
     display: flex;
     flex-direction: column;

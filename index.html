@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Λύσε τις πράξεις στο Πι και Φι!</title>
-    <link rel="stylesheet" href="style.css?v=8">
+    <link rel="stylesheet" href="style.css?v=10">
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -53,6 +53,48 @@
         </div>
     </div>
 
+    <!-- Time Selection Screen (Hidden initially) -->
+    <div id="time-selection-screen" class="selection-screen hidden">
+        <div class="selection-content">
+            <h1>Πόσο χρόνο θέλεις; ⏱️</h1>
+            <p>Επίλεξε τη διάρκεια του παιχνιδιού:</p>
+            <div class="selection-buttons">
+                <button class="action-btn choice-btn time-btn" data-time="10">
+                    <span class="icon">⏳</span>
+                    <span>10 δευτ.</span>
+                </button>
+                <button class="action-btn choice-btn time-btn" data-time="20">
+                    <span class="icon">⏳</span>
+                    <span>20 δευτ.</span>
+                </button>
+                <button class="action-btn choice-btn time-btn" data-time="30">
+                    <span class="icon">⌛</span>
+                    <span>30 δευτ.</span>
+                </button>
+                <button class="action-btn choice-btn time-btn" data-time="60">
+                    <span class="icon">⌛</span>
+                    <span>1 λεπτό</span>
+                </button>
+            </div>
+            <button id="btn-back-to-mode" class="cmd-btn back-btn" style="position:relative; margin-top:30px;">↩️ Πίσω στα Modes</button>
+        </div>
+        <div class="characters selection-character">
+            <div class="mascot pencil">
+                <!-- Mascot -->
+                <div class="pencil-eraser"></div>
+                <div class="pencil-metal"></div>
+                <div class="pencil-body">
+                    <div class="eyes">
+                        <div class="eye"><div class="pupil"></div></div>
+                        <div class="eye"><div class="pupil"></div></div>
+                    </div>
+                    <div class="smile"></div>
+                </div>
+                <div class="pencil-wood"><div class="pencil-tip"></div></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Game Screen (Hidden initially) -->
     <div id="game-container" class="split-screen hidden">
         
@@ -61,6 +103,7 @@
             <header>
                 <h2>Παίκτης 1</h2>
                 <div class="score-board">Σκορ: <span id="score-p1">0</span></div>
+                <div class="timer-display">⏱️ <span id="timer-p1">0</span>s</div>
             </header>
             
             <main class="game-area">
@@ -115,6 +158,7 @@
             <header>
                 <h2>Παίκτης 2</h2>
                 <div class="score-board">Σκορ: <span id="score-p2">0</span></div>
+                <div class="timer-display">⏱️ <span id="timer-p2">0</span>s</div>
             </header>
             
             <main class="game-area">
@@ -161,8 +205,28 @@
 
     </div>
     
+    <!-- Game Over Screen (Hidden initially) -->
+    <div id="game-over-screen" class="selection-screen hidden" style="z-index: 2000;">
+        <div class="selection-content">
+            <h1>Τέλος Χρόνου! ⏰</h1>
+            <div id="game-results" style="font-size: 1.5rem; margin: 20px 0; font-family: 'Comic Neue', sans-serif;">
+                <!-- Results injected here -->
+            </div>
+            <div style="margin-top: 30px;">
+                <button id="btn-play-again" class="action-btn choice-btn" style="width: auto; padding: 10px 30px; height: auto;">
+                    <span class="icon">🔄</span>
+                    <span>Ξανά Παιχνίδι!</span>
+                </button>
+                <button id="btn-home" class="action-btn choice-btn" style="width: auto; padding: 10px 30px; height: auto; margin-left: 10px; border-color: var(--accent-red);">
+                    <span class="icon">🏠</span>
+                    <span>Αρχική</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <button id="btn-back" class="cmd-btn back-btn hidden">↩️ Πίσω</button>
 
-    <script src="script.js?v=8"></script>
+    <script src="script.js?v=10"></script>
 </body>
 </html>

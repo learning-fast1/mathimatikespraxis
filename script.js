@@ -2,11 +2,22 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Screens
     const selectionScreen = document.getElementById('selection-screen');
+    const timeSelectionScreen = document.getElementById('time-selection-screen');
     const gameContainer = document.getElementById('game-container');
+    const gameOverScreen = document.getElementById('game-over-screen');
     const btnSingle = document.getElementById('btn-single');
     const btnTablet = document.getElementById('btn-tablet');
     const btnBoard = document.getElementById('btn-board');
     const btnBack = document.getElementById('btn-back');
+    const btnBackToMode = document.getElementById('btn-back-to-mode');
+    const btnPlayAgain = document.getElementById('btn-play-again');
+    const btnHome = document.getElementById('btn-home');
+
+    // Global Game State
+    let selectedMode = '';
+    let selectedTime = 0;
+    let timerInterval = null;
+    let remainingTime = 0;
 
     // Player State
     const players = {
@@ -22,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const opEls = { 1: getEl('operator-p1'), 2: getEl('operator-p2') };
     const answerEls = { 1: getEl('answer-p1'), 2: getEl('answer-p2') };
     const feedbackEls = { 1: getEl('feedback-p1'), 2: getEl('feedback-p2') };
+    const timerEls = { 1: getEl('timer-p1'), 2: getEl('timer-p2') };
 
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -185,42 +197,121 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // View Selection Logic
-    function startGame(mode) {
-        // Reset scores
+    function selectMode(mode) {
+        selectedMode = mode;
+        selectionScreen.classList.add('hidden');
+        timeSelectionScreen.classList.remove('hidden');
+    }
+
+    document.querySelectorAll('.time-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            selectedTime = parseInt(btn.getAttribute('data-time'), 10);
+            startGameWithTime();
+        });
+    });
+
+    function startGameWithTime() {
+        // Reset scores and timers
         players[1].score = 0;
         players[2].score = 0;
         scoreEls[1].textContent = 0;
         scoreEls[2].textContent = 0;
+        remainingTime = selectedTime;
+        timerEls[1].textContent = remainingTime;
+        timerEls[2].textContent = remainingTime;
+        timerEls[1].classList.remove('timer-pulse');
+        timerEls[2].classList.remove('timer-pulse');
 
         // Apply mode class
         gameContainer.className = 'split-screen'; // Reset classes
-        if (mode === 'tablet') {
+        if (selectedMode === 'tablet') {
             gameContainer.classList.add('tablet-mode');
-        } else if (mode === 'board') {
+        } else if (selectedMode === 'board') {
             gameContainer.classList.add('board-mode');
-        } else if (mode === 'single') {
+        } else if (selectedMode === 'single') {
             gameContainer.classList.add('single-mode');
         }
 
         // Switch screens
-        selectionScreen.classList.add('hidden');
+        timeSelectionScreen.classList.add('hidden');
+        gameOverScreen.classList.add('hidden');
         gameContainer.classList.remove('hidden');
         btnBack.classList.remove('hidden');
 
         // Start first problem
         generateProblem(1);
-        if (mode !== 'single') {
+        if (selectedMode !== 'single') {
             generateProblem(2);
         } else {
             players[2].isActive = false;
         }
+
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            remainingTime--;
+            timerEls[1].textContent = remainingTime;
+            timerEls[2].textContent = remainingTime;
+
+            if (remainingTime <= 10 && remainingTime > 0) {
+                timerEls[1].classList.add('timer-pulse');
+                timerEls[2].classList.add('timer-pulse');
+            }
+
+            if (remainingTime <= 0) {
+                endGame();
+            }
+        }, 1000);
     }
 
-    btnSingle.addEventListener('click', () => startGame('single'));
-    btnTablet.addEventListener('click', () => startGame('tablet'));
-    btnBoard.addEventListener('click', () => startGame('board'));
+    function endGame() {
+        clearInterval(timerInterval);
+        players[1].isActive = false;
+        players[2].isActive = false;
+        timerEls[1].classList.remove('timer-pulse');
+        timerEls[2].classList.remove('timer-pulse');
+        
+        let resultHtml = '';
+        if (selectedMode === 'single') {
+            resultHtml = `Μπράβο! Το σκορ σου είναι <b>${players[1].score}</b> 🎉`;
+            createConfetti(1);
+        } else {
+            if (players[1].score > players[2].score) {
+                resultHtml = `Νικητής: Παίκτης 1 με ${players[1].score} πόντους! 🎉<br>Παίκτης 2: ${players[2].score} πόντους.`;
+                createConfetti(1);
+            } else if (players[2].score > players[1].score) {
+                resultHtml = `Νικητής: Παίκτης 2 με ${players[2].score} πόντους! 🎉<br>Παίκτης 1: ${players[1].score} πόντους.`;
+                createConfetti(2);
+            } else {
+                resultHtml = `Ισοπαλία με ${players[1].score} πόντους! 🤝`;
+                createConfetti(1);
+                createConfetti(2);
+            }
+        }
+        document.getElementById('game-results').innerHTML = resultHtml;
+        gameOverScreen.classList.remove('hidden');
+        btnBack.classList.add('hidden');
+    }
+
+    btnSingle.addEventListener('click', () => selectMode('single'));
+    btnTablet.addEventListener('click', () => selectMode('tablet'));
+    btnBoard.addEventListener('click', () => selectMode('board'));
+
+    btnBackToMode.addEventListener('click', () => {
+        timeSelectionScreen.classList.add('hidden');
+        selectionScreen.classList.remove('hidden');
+    });
+
+    btnPlayAgain.addEventListener('click', () => {
+        startGameWithTime();
+    });
+
+    btnHome.addEventListener('click', () => {
+        gameOverScreen.classList.add('hidden');
+        selectionScreen.classList.remove('hidden');
+    });
 
     btnBack.addEventListener('click', () => {
+        clearInterval(timerInterval);
         players[1].isActive = false;
         players[2].isActive = false;
         gameContainer.classList.add('hidden');
