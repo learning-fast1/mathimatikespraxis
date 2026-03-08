@@ -87,9 +87,11 @@ h1, h2 {
     background-size: 60px 60px;
     background-position: 0 0, 30px 30px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    overflow-y: auto;
     z-index: 1000;
+    padding: 20px 0;
+    box-sizing: border-box;
 }
 
 .selection-content {
@@ -103,7 +105,7 @@ h1, h2 {
     border: 8px dashed white;
     position: relative;
     z-index: 2;
-    margin-top: 30px; /* Push the whole box slightly down from top edge */
+    margin: auto; /* Centers when space is available, scrolls nicely when not */
 }
 
 .selection-content h1 {
