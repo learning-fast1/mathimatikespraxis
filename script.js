@@ -103,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             createConfetti(player);
 
-            // Wait a bit, then next problem just for them
-            setTimeout(() => generateProblem(player), 2000);
+            // Wait a bit less, then next problem just for them
+            setTimeout(() => generateProblem(player), 500);
 
         } else {
             // Wrong answer
