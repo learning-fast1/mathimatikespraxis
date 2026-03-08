@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Player State
     const players = {
-        1: { score: 0, answerStr: '', currentAnswer: 0, isActive: false },
-        2: { score: 0, answerStr: '', currentAnswer: 0, isActive: false }
+        1: { score: 0, answerStr: '', currentAnswer: 0, isActive: false, usedProblems: new Set() },
+        2: { score: 0, answerStr: '', currentAnswer: 0, isActive: false, usedProblems: new Set() }
     };
 
     // Elements
@@ -56,36 +56,52 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackEls[p].className = 'feedback';
         feedbackEls[p].textContent = '';
 
-        let num1, num2, answer;
+        let num1, num2, answer, operator;
+        let problemKey;
+        let attempts = 0;
+        const maxAttempts = 100; // prevent infinite loops if all are exhausted early
 
-        if (selectedOperation === 'add10') {
-            answer = getRandomInt(2, 10);
-            num1 = getRandomInt(1, answer - 1);
-            num2 = answer - num1;
-            opEls[p].textContent = '+';
-        } else if (selectedOperation === 'add20') {
-            answer = getRandomInt(2, 20);
-            num1 = getRandomInt(1, answer - 1);
-            num2 = answer - num1;
-            opEls[p].textContent = '+';
-        } else if (selectedOperation === 'sub10') {
-            num1 = getRandomInt(1, 10);
-            num2 = getRandomInt(1, num1); // answer won't be negative
-            answer = num1 - num2;
-            opEls[p].textContent = '-';
-        } else if (selectedOperation === 'sub20') {
-            num1 = getRandomInt(1, 20);
-            num2 = getRandomInt(1, num1); // answer won't be negative
-            answer = num1 - num2;
-            opEls[p].textContent = '-';
-        } else {
-            // fallback (just in case)
-            answer = getRandomInt(2, 10);
-            num1 = getRandomInt(1, answer - 1);
-            num2 = answer - num1;
-            opEls[p].textContent = '+';
-        }
-        
+        do {
+            if (selectedOperation === 'add10') {
+                answer = getRandomInt(2, 10);
+                num1 = getRandomInt(1, answer - 1);
+                num2 = answer - num1;
+                operator = '+';
+            } else if (selectedOperation === 'add20') {
+                answer = getRandomInt(2, 20);
+                num1 = getRandomInt(1, answer - 1);
+                num2 = answer - num1;
+                operator = '+';
+            } else if (selectedOperation === 'sub10') {
+                num1 = getRandomInt(1, 10);
+                num2 = getRandomInt(1, num1); // answer won't be negative
+                answer = num1 - num2;
+                operator = '-';
+            } else if (selectedOperation === 'sub20') {
+                num1 = getRandomInt(1, 20);
+                num2 = getRandomInt(1, num1); // answer won't be negative
+                answer = num1 - num2;
+                operator = '-';
+            } else {
+                answer = getRandomInt(2, 10);
+                num1 = getRandomInt(1, answer - 1);
+                num2 = answer - num1;
+                operator = '+';
+            }
+            
+            problemKey = `${num1}${operator}${num2}`;
+            attempts++;
+            
+            // If we've made too many attempts to find a unique one, assume we've exhausted all options
+            // and clear the set to start fresh.
+            if (attempts > maxAttempts) {
+                players[p].usedProblems.clear();
+                break;
+            }
+        } while (players[p].usedProblems.has(problemKey));
+
+        players[p].usedProblems.add(problemKey);
+        opEls[p].textContent = operator;
         players[p].currentAnswer = answer;
 
         num1Els[p].textContent = num1;
@@ -239,9 +255,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function startGameWithTime() {
-        // Reset scores and timers
+        // Reset scores and timers and history
         players[1].score = 0;
         players[2].score = 0;
+        players[1].usedProblems.clear();
+        players[2].usedProblems.clear();
         scoreEls[1].textContent = 0;
         scoreEls[2].textContent = 0;
         remainingTime = selectedTime;
