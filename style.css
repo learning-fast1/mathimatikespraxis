@@ -715,3 +715,57 @@ header h2 {
     70%  { transform: translateY(0) scale(1) rotate(0deg); }
     100% { transform: translateY(0) scale(1) rotate(0deg); }
 }
+
+/* ===== Button icon signs (+/−) ===== */
+.btn-sign {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-family: 'Comic Neue', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 5px 0 rgba(0,0,0,0.15);
+    flex-shrink: 0;
+    margin-bottom: 4px;
+    transition: transform 0.15s ease;
+}
+
+.btn-sign-plus {
+    background: var(--accent-red);
+    box-shadow: 0 5px 0 #c94d4d;
+}
+
+.btn-sign-minus {
+    background: var(--accent-blue);
+    box-shadow: 0 5px 0 #2d8aaa;
+}
+
+.choice-btn:hover .btn-sign {
+    transform: scale(1.15) rotate(-8deg);
+}
+
+/* Mix button: two signs side by side with alternating bounce */
+.btn-sign-mix {
+    display: inline-flex;
+    gap: 4px;
+    margin-bottom: 4px;
+}
+
+.mix-plus {
+    animation: mixPop 1.8s ease-in-out infinite;
+}
+
+.mix-minus {
+    animation: mixPop 1.8s ease-in-out infinite 0.9s;
+}
+
+@keyframes mixPop {
+    0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+    30%       { transform: translateY(-8px) scale(1.2) rotate(-10deg); }
+    60%       { transform: translateY(0) scale(1) rotate(4deg); }
+}
