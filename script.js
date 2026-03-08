@@ -56,19 +56,34 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackEls[p].className = 'feedback';
         feedbackEls[p].textContent = '';
 
-        const isAddition = Math.random() > 0.5;
         let num1, num2, answer;
 
-        if (isAddition) {
+        if (selectedOperation === 'add10') {
+            answer = getRandomInt(2, 10);
+            num1 = getRandomInt(1, answer - 1);
+            num2 = answer - num1;
+            opEls[p].textContent = '+';
+        } else if (selectedOperation === 'add20') {
             answer = getRandomInt(2, 20);
             num1 = getRandomInt(1, answer - 1);
             num2 = answer - num1;
             opEls[p].textContent = '+';
-        } else {
-            num1 = getRandomInt(1, 20);
-            num2 = getRandomInt(1, num1);
+        } else if (selectedOperation === 'sub10') {
+            num1 = getRandomInt(1, 10);
+            num2 = getRandomInt(1, num1); // answer won't be negative
             answer = num1 - num2;
             opEls[p].textContent = '-';
+        } else if (selectedOperation === 'sub20') {
+            num1 = getRandomInt(1, 20);
+            num2 = getRandomInt(1, num1); // answer won't be negative
+            answer = num1 - num2;
+            opEls[p].textContent = '-';
+        } else {
+            // fallback (just in case)
+            answer = getRandomInt(2, 10);
+            num1 = getRandomInt(1, answer - 1);
+            num2 = answer - num1;
+            opEls[p].textContent = '+';
         }
         
         players[p].currentAnswer = answer;
