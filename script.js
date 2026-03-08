@@ -93,27 +93,65 @@ document.addEventListener('DOMContentLoaded', () => {
         const maxAttempts = 2000; // increase attempts to ensure we find all combinations mathematically
 
         do {
-            if (selectedOperation === 'add10') {
+            let activeOp = selectedOperation;
+            if (activeOp === 'mix') {
+                const ops = ['add10', 'addBridge', 'addTeen', 'sub10', 'subBreak', 'subTeen'];
+                activeOp = ops[getRandomInt(0, ops.length - 1)];
+            }
+
+            if (activeOp === 'add10') {
                 answer = getRandomInt(2, 10);
                 num1 = getRandomInt(1, answer - 1);
                 num2 = answer - num1;
                 operator = '+';
-            } else if (selectedOperation === 'add20') {
-                answer = getRandomInt(2, 20);
-                num1 = getRandomInt(1, answer - 1);
-                num2 = answer - num1;
+            } else if (activeOp === 'addBridge') {
+                // Single digits 2-9, sum > 10
+                num1 = getRandomInt(2, 9);
+                // num2 must be large enough to break 10, but max 9
+                const minNum2 = 11 - num1;
+                num2 = getRandomInt(Math.max(2, minNum2), 9);
+                answer = num1 + num2;
                 operator = '+';
-            } else if (selectedOperation === 'sub10') {
+            } else if (activeOp === 'addTeen') {
+                // One two-digit (10-19), one single-digit (1-9), sum <= 20
+                num1 = getRandomInt(10, 19);
+                num2 = getRandomInt(1, 20 - num1);
+                answer = num1 + num2;
+                operator = '+';
+                
+                // 50% chance to swap num1 and num2 so the single digit isn't always second
+                if (Math.random() < 0.5) {
+                    let temp = num1;
+                    num1 = num2;
+                    num2 = temp;
+                }
+            } else if (activeOp === 'sub10') {
+                // Up to 10
                 num1 = getRandomInt(1, 10);
                 num2 = getRandomInt(1, num1); // answer won't be negative
                 answer = num1 - num2;
                 operator = '-';
-            } else if (selectedOperation === 'sub20') {
-                num1 = getRandomInt(1, 20);
-                num2 = getRandomInt(1, num1); // answer won't be negative
+            } else if (activeOp === 'subBreak') {
+                // First is 11-18, subtract 2-9, answer < 10
+                num1 = getRandomInt(11, 18);
+                // minNum2 must be enough to bring it under 10
+                const minNum2 = num1 - 9;
+                // maxNum2 could be up to 9, but must not exceed the number itself (though num1 > 10, so 9 is fine)
+                // We enforce num2 max 9 because it's breaking a single ten
+                num2 = getRandomInt(minNum2, Math.min(9, num1 - 1));
+                answer = num1 - num2;
+                operator = '-';
+            } else if (activeOp === 'subTeen') {
+                // Answer stays >= 10. E.g. 15-4=11.
+                // num1 is 11-20
+                num1 = getRandomInt(11, 20);
+                // We want result to be >= 10. So num1 - num2 >= 10 => num2 <= num1 - 10
+                const maxNum2 = num1 - 10;
+                num2 = getRandomInt(1, maxNum2);
                 answer = num1 - num2;
                 operator = '-';
             } else {
+                // Fallback (legacy add20/sub20 or errors)
                 answer = getRandomInt(2, 10);
                 num1 = getRandomInt(1, answer - 1);
                 num2 = answer - num1;
