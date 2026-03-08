@@ -1,19 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
     
     // Screens
+    const operationSelectionScreen = document.getElementById('operation-selection-screen');
     const selectionScreen = document.getElementById('selection-screen');
     const timeSelectionScreen = document.getElementById('time-selection-screen');
     const gameContainer = document.getElementById('game-container');
     const gameOverScreen = document.getElementById('game-over-screen');
+    
+    // Buttons
     const btnSingle = document.getElementById('btn-single');
     const btnTablet = document.getElementById('btn-tablet');
     const btnBoard = document.getElementById('btn-board');
     const btnBack = document.getElementById('btn-back');
+    const btnBackToOp = document.getElementById('btn-back-to-op');
     const btnBackToMode = document.getElementById('btn-back-to-mode');
     const btnPlayAgain = document.getElementById('btn-play-again');
     const btnHome = document.getElementById('btn-home');
 
     // Global Game State
+    let selectedOperation = '';
     let selectedMode = '';
     let selectedTime = 0;
     let timerInterval = null;
@@ -197,6 +202,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // View Selection Logic
+    document.querySelectorAll('.op-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            selectedOperation = btn.getAttribute('data-op');
+            operationSelectionScreen.classList.add('hidden');
+            selectionScreen.classList.remove('hidden');
+        });
+    });
+
     function selectMode(mode) {
         selectedMode = mode;
         selectionScreen.classList.add('hidden');
@@ -296,6 +309,11 @@ document.addEventListener('DOMContentLoaded', () => {
     btnTablet.addEventListener('click', () => selectMode('tablet'));
     btnBoard.addEventListener('click', () => selectMode('board'));
 
+    btnBackToOp.addEventListener('click', () => {
+        selectionScreen.classList.add('hidden');
+        operationSelectionScreen.classList.remove('hidden');
+    });
+
     btnBackToMode.addEventListener('click', () => {
         timeSelectionScreen.classList.add('hidden');
         selectionScreen.classList.remove('hidden');
@@ -307,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnHome.addEventListener('click', () => {
         gameOverScreen.classList.add('hidden');
-        selectionScreen.classList.remove('hidden');
+        operationSelectionScreen.classList.remove('hidden');
     });
 
     btnBack.addEventListener('click', () => {
@@ -316,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
         players[2].isActive = false;
         gameContainer.classList.add('hidden');
         btnBack.classList.add('hidden');
-        selectionScreen.classList.remove('hidden');
+        operationSelectionScreen.classList.remove('hidden');
     });
 
 });
