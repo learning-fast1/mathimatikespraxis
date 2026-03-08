@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnBackToOp = document.getElementById('btn-back-to-op');
     const btnBackToMode = document.getElementById('btn-back-to-mode');
     const btnPlayAgain = document.getElementById('btn-play-again');
+    const btnReplayMistakes = document.getElementById('btn-replay-mistakes');
     const btnHome = document.getElementById('btn-home');
 
     // Global Game State
@@ -272,14 +273,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function startGameWithTime() {
-        // Reset scores and timers and history
+        btnReplayMistakes.addEventListener('click', () => {
+            // Only start with time if we have mistakes
+            startGameWithTime({ replayMistakes: true });
+        });
+
+    function startGameWithTime(options = { replayMistakes: false }) {
+        // Reset scores and timers
         players[1].score = 0;
         players[2].score = 0;
-        players[1].usedProblems.clear();
-        players[2].usedProblems.clear();
-        players[1].mistakenProblems = [];
-        players[2].mistakenProblems = [];
+        
+        // If not replaying mistakes, clear history completely
+        if (!options.replayMistakes) {
+            players[1].usedProblems.clear();
+            players[2].usedProblems.clear();
+            players[1].mistakenProblems = [];
+            players[2].mistakenProblems = [];
+        } else {
+            // If replaying mistakes, we want to clear the 'usedProblems' set so they can be asked again,
+            // but keep the 'mistakenProblems' array intact as our queue.
+            players[1].usedProblems.clear();
+            players[2].usedProblems.clear();
+        }
         scoreEls[1].textContent = 0;
         scoreEls[2].textContent = 0;
         remainingTime = selectedTime;
@@ -354,6 +369,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         document.getElementById('game-results').innerHTML = resultHtml;
+        
+        // Show replay mistakes button if any player has mistakes queued
+        if (players[1].mistakenProblems.length > 0 || (selectedMode !== 'single' && players[2].mistakenProblems.length > 0)) {
+            btnReplayMistakes.classList.remove('hidden');
+        } else {
+            btnReplayMistakes.classList.add('hidden');
+        }
+
         gameOverScreen.classList.remove('hidden');
         btnBack.classList.add('hidden');
     }

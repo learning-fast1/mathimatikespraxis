@@ -255,12 +255,16 @@
             <div id="game-results" style="font-size: 1.5rem; margin: 20px 0; font-family: 'Comic Neue', sans-serif;">
                 <!-- Results injected here -->
             </div>
-            <div style="margin-top: 30px;">
+            <div style="margin-top: 30px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
                 <button id="btn-play-again" class="action-btn choice-btn" style="width: auto; padding: 10px 30px; height: auto;">
                     <span class="icon">🔄</span>
                     <span>Ξανά Παιχνίδι!</span>
                 </button>
-                <button id="btn-home" class="action-btn choice-btn" style="width: auto; padding: 10px 30px; height: auto; margin-left: 10px; border-color: var(--accent-red);">
+                <button id="btn-replay-mistakes" class="action-btn choice-btn hidden" style="width: auto; padding: 10px 30px; height: auto; border-color: var(--accent-orange);">
+                    <span class="icon">🤔</span>
+                    <span>Επανάληψη Λαθών</span>
+                </button>
+                <button id="btn-home" class="action-btn choice-btn" style="width: auto; padding: 10px 30px; height: auto; border-color: var(--accent-red);">
                     <span class="icon">🏠</span>
                     <span>Αρχική</span>
                 </button>
