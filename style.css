@@ -530,35 +530,46 @@ header h2 {
         margin-bottom: 20px;
     }
     .selection-buttons {
-        flex-direction: column; /* Stack vertically only on mobile */
-        gap: 15px;
+        /* On mobile, we still want a grid or a wrap, but smaller */
+        flex-direction: row; 
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 0 5px;
     }
     .choice-btn {
         width: 100%;
-        max-width: 320px;
-        min-width: 200px;
+        max-width: 100%; /* Take up the fraction assigned by flex */
+        min-width: 140px;
         height: auto;
-        padding: 15px 15px;
-        flex-direction: row;
-        justify-content: flex-start;
-        margin: 0 auto;
+        padding: 10px 5px;
+        flex-direction: column; /* Keep icon above text */
+        justify-content: center;
+        margin: 0;
+    }
+    .op-btn {
+        flex: 1 1 140px; /* Allow 2 per row even on 320px screens */
+        max-width: 180px;
     }
     .choice-btn .icon {
-        font-size: 2.5rem;
-        margin-right: 15px;
+        font-size: 2rem;
+        margin-right: 0;
+        margin-bottom: 5px;
     }
     .choice-btn span {
-        font-size: 1.2rem;
+        font-size: 1rem;
+        text-align: center;
     }
     .choice-btn small {
         display: block;
-        margin-top: 5px;
+        margin-top: 2px;
+        font-size: 0.8rem;
+        text-align: center;
     }
     .btn-text-container {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
+        align-items: center;
+        text-align: center;
     }
     header {
         position: relative;
