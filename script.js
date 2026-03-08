@@ -125,20 +125,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // If all combinations seem exhausted
             if (attempts > maxAttempts) {
-                // If there are mistakes, prioritize drawing from them
-                if (players[p].mistakenProblems.length > 0) {
-                    const savedError = players[p].mistakenProblems.shift();
-                    num1 = savedError.num1;
-                    num2 = savedError.num2;
-                    answer = savedError.answer;
-                    operator = savedError.operator;
-                    problemKey = `${num1}${operator}${num2}`;
-                    break;
-                } else {
-                    // Otherwise just clear the memory and keep generating randomly
-                    players[p].usedProblems.clear();
-                    break;
-                }
+                // Clear the used set and keep generating randomly
+                players[p].usedProblems.clear();
+                break;
             }
         } while (players[p].usedProblems.has(problemKey));
 
