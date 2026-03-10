@@ -310,24 +310,24 @@ header {
 }
 
 header h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
 }
 
 .score-board {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     background-color: white;
     display: inline-block;
-    padding: 6px 18px;
+    padding: 5px 15px;
     border-radius: 15px;
     font-weight: bold;
     border: 3px dashed var(--accent-purple);
 }
 
 .timer-display {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     background-color: white;
     display: inline-block;
-    padding: 6px 18px;
+    padding: 5px 15px;
     border-radius: 15px;
     font-weight: bold;
     border: 3px dashed var(--accent-red);
@@ -345,12 +345,12 @@ header h2 {
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    margin-top: 30px;
+    margin-top: 25px;
     background: rgba(255, 255, 255, 0.85);
-    padding: 20px 30px;
-    border-radius: 25px;
+    padding: 15px 25px;
+    border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    border: 5px dashed white;
+    border: 4px dashed white;
     max-width: 95%;
 }
 
@@ -358,17 +358,17 @@ header h2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 12px;
     font-family: 'Comic Neue', sans-serif;
-    font-size: 3.5rem;
+    font-size: 2.8rem;
     flex-wrap: wrap;
 }
 
 .number {
     background-color: var(--accent-blue);
     color: white;
-    width: 75px;
-    height: 75px;
+    width: 65px;
+    height: 65px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -392,14 +392,14 @@ header h2 {
 
 .answer-box {
     font-family: 'Comic Neue', sans-serif;
-    font-size: 3.5rem;
-    width: 95px;
-    height: 80px;
+    font-size: 2.8rem;
+    width: 85px;
+    height: 75px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 5px solid var(--accent-purple);
-    border-radius: 16px;
+    border: 4px solid var(--accent-purple);
+    border-radius: 14px;
     background: white;
     color: var(--primary-text);
     box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
@@ -409,17 +409,17 @@ header h2 {
 .numpad {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 10px;
     width: 100%;
-    max-width: 320px;
+    max-width: 260px;
 }
 
 .numpad button {
     font-family: 'Comic Neue', sans-serif;
-    font-size: 2rem;
-    padding: 15px;
+    font-size: 1.8rem;
+    padding: 12px;
     border: none;
-    border-radius: 14px;
+    border-radius: 12px;
     background-color: white;
     color: var(--primary-text);
     box-shadow: 0 4px 0 #ddd;
@@ -712,49 +712,49 @@ header h2 {
 /* Tablet & Desktop Single Mode Enhancements */
 @media (min-width: 601px) {
     .split-screen.single-mode .game-area {
-        padding: 40px 60px;
-        gap: 20px;
-        max-width: 700px;
-        margin-top: 50px;
-        border-width: 6px;
+        padding: 25px 35px;
+        gap: 15px;
+        max-width: 500px;
+        margin-top: 30px;
+        border-width: 5px;
     }
 
     .split-screen.single-mode .equation-container {
-        font-size: 5rem;
-        gap: 30px;
-    }
-
-    .split-screen.single-mode .number {
-        width: 110px;
-        height: 110px;
-    }
-
-    .split-screen.single-mode .answer-box {
-        width: 140px;
-        height: 120px;
-        font-size: 5rem;
-    }
-
-    .split-screen.single-mode .numpad {
-        max-width: 450px;
+        font-size: 3.5rem;
         gap: 20px;
     }
 
+    .split-screen.single-mode .number {
+        width: 80px;
+        height: 80px;
+    }
+
+    .split-screen.single-mode .answer-box {
+        width: 100px;
+        height: 90px;
+        font-size: 3.5rem;
+    }
+
+    .split-screen.single-mode .numpad {
+        max-width: 320px;
+        gap: 12px;
+    }
+
     .split-screen.single-mode .numpad button {
-        font-size: 2.8rem;
-        padding: 20px;
+        font-size: 2rem;
+        padding: 15px;
     }
 
     .split-screen.single-mode header h2 {
-        font-size: 2.5rem;
-        margin-bottom: 15px;
+        font-size: 2rem;
+        margin-bottom: 10px;
     }
 
     .split-screen.single-mode .score-board,
     .split-screen.single-mode .timer-display {
-        font-size: 1.8rem;
-        padding: 10px 25px;
-        border-width: 5px;
+        font-size: 1.5rem;
+        padding: 8px 15px;
+        border-width: 4px;
     }
 }
 
