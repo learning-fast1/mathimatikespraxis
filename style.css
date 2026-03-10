@@ -345,12 +345,12 @@ header h2 {
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    margin-top: 25px;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 15px 25px;
-    border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    border: 4px dashed white;
+    margin-top: 30px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 15px 30px;
+    border-radius: 25px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border: 5px dashed white;
     max-width: 95%;
 }
 
@@ -358,17 +358,17 @@ header h2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     font-family: 'Comic Neue', sans-serif;
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     flex-wrap: wrap;
 }
 
 .number {
     background-color: var(--accent-blue);
     color: white;
-    width: 65px;
-    height: 65px;
+    width: 60px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -392,14 +392,14 @@ header h2 {
 
 .answer-box {
     font-family: 'Comic Neue', sans-serif;
-    font-size: 2.8rem;
-    width: 85px;
-    height: 75px;
+    font-size: 2.5rem;
+    width: 80px;
+    height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 4px solid var(--accent-purple);
-    border-radius: 14px;
+    border-radius: 15px;
     background: white;
     color: var(--primary-text);
     box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
@@ -411,13 +411,13 @@ header h2 {
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     width: 100%;
-    max-width: 260px;
+    max-width: 250px;
 }
 
 .numpad button {
     font-family: 'Comic Neue', sans-serif;
-    font-size: 1.8rem;
-    padding: 12px;
+    font-size: 1.5rem;
+    padding: 10px;
     border: none;
     border-radius: 12px;
     background-color: white;
@@ -706,55 +706,6 @@ header h2 {
 @keyframes fall {
     to {
         transform: translateY(100vh) rotate(720deg);
-    }
-}
-
-/* Tablet & Desktop Single Mode Enhancements */
-@media (min-width: 601px) {
-    .split-screen.single-mode .game-area {
-        padding: 25px 35px;
-        gap: 15px;
-        max-width: 500px;
-        margin-top: 30px;
-        border-width: 5px;
-    }
-
-    .split-screen.single-mode .equation-container {
-        font-size: 3.5rem;
-        gap: 20px;
-    }
-
-    .split-screen.single-mode .number {
-        width: 80px;
-        height: 80px;
-    }
-
-    .split-screen.single-mode .answer-box {
-        width: 100px;
-        height: 90px;
-        font-size: 3.5rem;
-    }
-
-    .split-screen.single-mode .numpad {
-        max-width: 320px;
-        gap: 12px;
-    }
-
-    .split-screen.single-mode .numpad button {
-        font-size: 2rem;
-        padding: 15px;
-    }
-
-    .split-screen.single-mode header h2 {
-        font-size: 2rem;
-        margin-bottom: 10px;
-    }
-
-    .split-screen.single-mode .score-board,
-    .split-screen.single-mode .timer-display {
-        font-size: 1.5rem;
-        padding: 8px 15px;
-        border-width: 4px;
     }
 }
 
