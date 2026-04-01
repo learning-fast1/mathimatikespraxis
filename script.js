@@ -1,5 +1,14 @@
+// GA4 Event Tracking Helper
+function trackEvent(eventName, params) {
+    try {
+        if (typeof gtag === 'function') {
+            gtag('event', eventName, params || {});
+        }
+    } catch (e) {}
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // Screens
     const operationSelectionScreen = document.getElementById('operation-selection-screen');
     const selectionScreen = document.getElementById('selection-screen');
@@ -199,6 +208,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (val === players[player].currentAnswer) {
             // Correct format: this player wins the round
             players[player].isActive = false; // Disable further inputs for this round
+            const prob = players[player].currentProblemAttempt;
+            trackEvent('answer_submitted', { problem: `${prob.num1}${prob.operator}${prob.num2}`, is_correct: true, player });
+            trackEvent('correct_answer', { problem: `${prob.num1}${prob.operator}${prob.num2}`, player, operation: selectedOperation });
             if (!isReplayMode) {
                 players[player].score += 10;
                 scoreEls[player].textContent = players[player].score;
@@ -216,6 +228,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } else {
             // Wrong answer
+            const prob = players[player].currentProblemAttempt;
+            trackEvent('answer_submitted', { problem: `${prob.num1}${prob.operator}${prob.num2}`, is_correct: false, player });
+            trackEvent('wrong_answer', { problem: `${prob.num1}${prob.operator}${prob.num2}`, correct_answer: players[player].currentAnswer, given_answer: val, player, operation: selectedOperation });
             feedbackEls[player].textContent = 'Λάθος! 💫';
             feedbackEls[player].className = 'feedback show wrong';
             players[player].answerStr = ''; // clear for retry
@@ -431,6 +446,8 @@ document.addEventListener('DOMContentLoaded', () => {
         gameContainer.classList.remove('hidden');
         btnBack.classList.remove('hidden');
 
+        trackEvent('start_game', { operation: selectedOperation, mode: selectedMode, duration_seconds: selectedTime });
+
         // Start first problem
         generateProblem(1);
         if (selectedMode !== 'single') {
@@ -489,6 +506,14 @@ document.addEventListener('DOMContentLoaded', () => {
             btnReplayMistakes.classList.add('hidden');
         }
 
+        trackEvent('finish_game', {
+            score_p1: players[1].score,
+            score_p2: selectedMode !== 'single' ? players[2].score : 0,
+            operation: selectedOperation,
+            mode: selectedMode,
+            duration_seconds: selectedTime
+        });
+
         gameOverScreen.classList.remove('hidden');
         btnBack.classList.add('hidden');
     }
@@ -508,6 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btnPlayAgain.addEventListener('click', () => {
+        trackEvent('restart_game', { operation: selectedOperation, mode: selectedMode });
         startGameWithTime();
     });
 
